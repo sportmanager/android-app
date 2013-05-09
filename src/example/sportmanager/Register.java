@@ -1,33 +1,43 @@
 package example.sportmanager;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.app.Activity;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
-public class Register extends Activity implements OnClickListener {
+public class Register extends Activity {
 
-	Button btnRegister;
-	
-	@Override
+	WebView mWebView;
+
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_registration);
-		
-		btnRegister = (Button) findViewById(R.id.button_make_registration);
-        btnRegister.setOnClickListener(this);
+	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.activity_registration);
+	           
+	    mWebView = (WebView) findViewById(R.id.webview);
+		// включаем поддержку JavaScript
+	    mWebView.getSettings().setJavaScriptEnabled(true);
+		// указываем страницу загрузки
+	    mWebView.loadUrl("http://sportmanager.zz.mu");
+	    mWebView.setWebViewClient(new HelloWebViewClient()); 
 	}
-
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		switch (v.getId()) {
-		case R.id.button_make_registration:
-			Intent i = new Intent(this, Login.class);
-			startActivity(i);
-			break;
-		}
+	private class HelloWebViewClient extends WebViewClient 
+	{
+	    @Override
+	    public boolean shouldOverrideUrlLoading(WebView view, String url) 
+	    {
+	        view.loadUrl(url);
+	        return true;
+	    }
 	}
-
+	
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    	if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
+    		mWebView.goBack();
+    		return true;
+    	}
+    	return super.onKeyDown(keyCode, event);
+    }
 }

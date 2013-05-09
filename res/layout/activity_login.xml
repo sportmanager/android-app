@@ -1,10 +1,11 @@
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/editEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -17,10 +18,10 @@
     </EditText>
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
+        android:layout_below="@+id/editEmail"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:ems="10"
@@ -30,9 +31,9 @@
         android:id="@+id/LinearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_alignRight="@+id/editText1"
-        android:layout_below="@+id/editText2"
+        android:layout_alignLeft="@+id/editEmail"
+        android:layout_alignRight="@+id/editEmail"
+        android:layout_below="@+id/editPassword"
         android:layout_marginTop="20dp"
         android:orientation="vertical" >
 
@@ -63,5 +64,14 @@
         android:layout_marginLeft="42dp"
         android:layout_marginTop="64dp"
         android:text="TextView" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_below="@+id/LinearLayout1"
+        android:layout_marginTop="16dp"
+        android:visibility="invisible" />
 
 </RelativeLayout>
