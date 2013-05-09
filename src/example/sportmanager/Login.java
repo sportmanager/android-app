@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+//github
 public class Login extends Activity implements OnClickListener{
 	Button btnRegister;
 	Button btnLogin;
