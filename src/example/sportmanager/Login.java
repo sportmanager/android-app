@@ -21,16 +21,13 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -47,10 +44,19 @@ public class Login extends Activity implements OnClickListener {
 	EditText editPassword;
 	JSONObject serverResponse;
 	WebView mWebView;
+	public static final String PREFS_NAME = "UserPrefs";
+	String email;
+	String password;
+	SharedPreferences settings;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		settings = getSharedPreferences(PREFS_NAME, 0);
+
+		email = settings.getString("email", "");
+		password = settings.getString("password", "");
+
 		setContentView(R.layout.activity_login);
 
 		btnRegister = (Button) findViewById(R.id.button_register);
@@ -61,6 +67,12 @@ public class Login extends Activity implements OnClickListener {
 		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 		editEmail = (EditText) findViewById(R.id.editEmail);
 		editPassword = (EditText) findViewById(R.id.editPassword);
+		editEmail.setText(email);
+		editPassword.setText(password);
+		if (email != "" && password != "") {
+			new MyTask().execute("http://app.sportmanager.zz.mu/");
+		}
+
 	}
 
 	@Override
@@ -79,6 +91,8 @@ public class Login extends Activity implements OnClickListener {
 		case R.id.button_login:
 			// Intent i2= new Intent(this, Main.class);
 			// startActivity(i2);
+			email = editEmail.getText().toString();
+			password = editPassword.getText().toString();
 			new MyTask().execute("http://app.sportmanager.zz.mu/");
 
 			break;
@@ -96,13 +110,16 @@ public class Login extends Activity implements OnClickListener {
 		}
 
 		protected JSONObject doInBackground(String... params) {
+			SharedPreferences.Editor editor = settings.edit();
+			editor.putString("email", email);
+			editor.putString("password", password);
+			editor.commit();
+			
 			HttpClient client = new DefaultHttpClient();
 			HttpPost post = new HttpPost(params[0]);
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-			pairs.add(new BasicNameValuePair("email", editEmail.getText()
-					.toString()));
-			pairs.add(new BasicNameValuePair("password", editPassword.getText()
-					.toString()));
+			pairs.add(new BasicNameValuePair("email", email));
+			pairs.add(new BasicNameValuePair("password", password));
 
 			try {
 				post.setEntity(new UrlEncodedFormEntity(pairs));
@@ -151,7 +168,8 @@ public class Login extends Activity implements OnClickListener {
 					Intent i2 = new Intent(Login.this, Main.class);
 					startActivity(i2);
 				} else {
-					Toast.makeText(Login.this, "wrong data", Toast.LENGTH_LONG)
+					Toast.makeText(Login.this,
+							"Invalid username/password. :'(", Toast.LENGTH_LONG)
 							.show();
 				}
 			} catch (JSONException e) {
@@ -159,8 +177,10 @@ public class Login extends Activity implements OnClickListener {
 				e.printStackTrace();
 			}
 
-			textView1.setText(result.toString());
-
+			// Debug
+			if (textView1 != null) {
+				textView1.setText(result.toString());
+			}
 			// Log.e("SPORT", result.toString());
 		}
 	}
