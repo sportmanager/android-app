@@ -53,5 +53,15 @@
             android:text="@string/register" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/LinearLayout1"
+        android:layout_marginLeft="42dp"
+        android:layout_marginTop="64dp"
+        android:text="TextView" />
 
 </RelativeLayout>
