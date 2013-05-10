@@ -16,7 +16,7 @@
         android:id="@+id/item3"
         android:icon="@android:drawable/ic_menu_camera"
         android:orderInCategory="300"
-        android:showAsAction="ifRoom|withText"
+        android:showAsAction="always|withText"
         android:title="Item3"/>
     <item
         android:id="@+id/menu_settings"
