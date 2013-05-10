@@ -175,6 +175,9 @@ public class Login extends SherlockActivity implements OnClickListener {
 			try {
 				String error = result.getString("error");
 				if (error == "false") {
+					SharedPreferences.Editor editor = settings.edit();
+					editor.putString("name", result.getString("name"));
+					editor.commit();
 					Intent i2 = new Intent(Login.this, Main.class);
 					startActivity(i2);
 				} else {

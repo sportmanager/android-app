@@ -43,12 +43,14 @@ public class UserView extends SherlockFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		tv = (View) getActivity().findViewById(R.id.text);
 		super.onActivityCreated(savedInstanceState);
+		setRetainInstance(true);
 
 		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
 		email = settings.getString("email", "");
 		password = settings.getString("password", "");
+		((TextView) tv).setText("Helloooooooo, " + settings.getString("name", "") + "!");
 
-		new MyTask().execute("http://app.sportmanager.zz.mu/");
+		//new MyTask().execute("http://app.sportmanager.zz.mu/");
 	}
 
 	@Override
@@ -116,7 +118,7 @@ public class UserView extends SherlockFragment {
 			try {
 				String error = result.getString("error");
 				if (error == "false") {
-					((TextView) tv).setText("Hello, "
+					((TextView) tv).setText("Helloooooooo, "
 							+ result.getString("name") + "!");
 				} else {
 					Toast.makeText(getActivity(),
