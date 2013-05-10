@@ -112,7 +112,7 @@ public class Login extends SherlockActivity implements OnClickListener {
 			btnRegister.setEnabled(false);
 			editEmail.setEnabled(false);
 			editPassword.setEnabled(false);
-			
+
 		}
 
 		protected JSONObject doInBackground(String... params) {
@@ -171,7 +171,7 @@ public class Login extends SherlockActivity implements OnClickListener {
 			btnRegister.setEnabled(true);
 			editEmail.setEnabled(true);
 			editPassword.setEnabled(true);
-			
+
 			try {
 				String error = result.getString("error");
 				if (error == "false") {
@@ -184,9 +184,7 @@ public class Login extends SherlockActivity implements OnClickListener {
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
-				Toast.makeText(Login.this,
-						"error", Toast.LENGTH_LONG)
-						.show();
+				Toast.makeText(Login.this, "error", Toast.LENGTH_LONG).show();
 				e.printStackTrace();
 			}
 
