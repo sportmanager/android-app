@@ -37,7 +37,7 @@ public class Main extends SherlockFragmentActivity {
 		mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
 
 		mTabsAdapter.addTab(mTabHost.newTabSpec("simple").setIndicator("User"),
-				FragmentStackSupport.CountingFragment.class, null);
+				UserView.class, null);
 		mTabsAdapter.addTab(
 				mTabHost.newTabSpec("contacts").setIndicator("Excercises"),
 				LoaderCursorSupport.CursorLoaderListFragment.class, null);

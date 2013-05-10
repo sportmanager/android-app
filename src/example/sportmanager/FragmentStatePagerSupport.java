@@ -126,9 +126,7 @@ public class FragmentStatePagerSupport extends SherlockFragmentActivity {
         @Override
         public void onActivityCreated(Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
-            setListAdapter(new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_list_item_1, Cheeses.sCheeseStrings));
-        }
+           }
 
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2011 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package example.sportmanager;
 
 import java.io.BufferedReader;
@@ -19,107 +35,54 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.app.SherlockFragment;
 
-//github
-public class Login extends SherlockActivity implements OnClickListener {
-	Button btnRegister;
-	Button btnLogin;
-	TextView textView1;
-	ProgressBar progressBar1;
-	EditText editEmail;
-	EditText editPassword;
-	JSONObject serverResponse;
-	WebView mWebView;
+public class UserView extends SherlockFragment {
+
 	public static final String PREFS_NAME = "UserPrefs";
 	String email;
 	String password;
 	SharedPreferences settings;
+	View tv;
+	View v;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		settings = getSharedPreferences(PREFS_NAME, 0);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		tv = (View) getActivity().findViewById(R.id.text);
+		super.onActivityCreated(savedInstanceState);
 
+		settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
 		email = settings.getString("email", "");
 		password = settings.getString("password", "");
 
-		setContentView(R.layout.activity_login);
-
-		btnRegister = (Button) findViewById(R.id.button_register);
-		btnRegister.setOnClickListener(this);
-		btnLogin = (Button) findViewById(R.id.button_login);
-		btnLogin.setOnClickListener(this);
-		textView1 = (TextView) findViewById(R.id.textView1);
-		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
-		editEmail = (EditText) findViewById(R.id.editEmail);
-		editPassword = (EditText) findViewById(R.id.editPassword);
-		editEmail.setText(email);
-		editPassword.setText(password);
-		if (email != "" && password != "") {
-			new MyTask().execute("http://app.sportmanager.zz.mu/");
-		}
-
+		new MyTask().execute("http://app.sportmanager.zz.mu/");
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_login, menu);
-		return true;
-	}
-
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		switch (v.getId()) {
-		case R.id.button_register:
-			Intent i = new Intent(this, Register.class);
-			startActivity(i);
-			break;
-		case R.id.button_login:
-			// Intent i2= new Intent(this, Main.class);
-			// startActivity(i2);
-			email = editEmail.getText().toString();
-			password = editPassword.getText().toString();
-			new MyTask().execute("http://app.sportmanager.zz.mu/");
-
-			break;
-		default:
-			break;
-		}
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		v = inflater.inflate(R.layout.hello_world, container, false);
+		return v;
 	}
 
 	class MyTask extends AsyncTask<String, String, JSONObject> {
 
 		protected void onPreExecute() {
 			super.onPreExecute();
-			progressBar1.setVisibility(View.VISIBLE);
-			textView1.setText("connecting");
-			btnLogin.setEnabled(false);
-			btnRegister.setEnabled(false);
-			editEmail.setEnabled(false);
-			editPassword.setEnabled(false);
-			
+
 		}
 
 		protected JSONObject doInBackground(String... params) {
-			SharedPreferences.Editor editor = settings.edit();
-			editor.putString("email", email);
-			editor.putString("password", password);
-			editor.commit();
+
 			HttpClient client = new DefaultHttpClient();
 			HttpPost post = new HttpPost(params[0]);
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
@@ -166,35 +129,24 @@ public class Login extends SherlockActivity implements OnClickListener {
 		protected void onPostExecute(JSONObject result) {
 			super.onPostExecute(result);
 
-			progressBar1.setVisibility(View.INVISIBLE);
-			btnLogin.setEnabled(true);
-			btnRegister.setEnabled(true);
-			editEmail.setEnabled(true);
-			editPassword.setEnabled(true);
-			
 			try {
 				String error = result.getString("error");
 				if (error == "false") {
-					Intent i2 = new Intent(Login.this, Main.class);
-					startActivity(i2);
+					((TextView) tv).setText("Hello, "
+							+ result.getString("name") + "!");
 				} else {
-					Toast.makeText(Login.this,
+					Toast.makeText(getActivity(),
 							"Invalid username/password. :'(", Toast.LENGTH_LONG)
 							.show();
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
-				Toast.makeText(Login.this,
-						"error", Toast.LENGTH_LONG)
+				Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG)
 						.show();
 				e.printStackTrace();
 			}
 
-			// Debug
-			if (textView1 != null) {
-				textView1.setText("");
-			}
-			// Log.e("SPORT", result.toString());
 		}
 	}
+
 }
