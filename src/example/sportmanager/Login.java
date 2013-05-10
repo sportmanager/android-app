@@ -19,12 +19,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
@@ -34,8 +32,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+
 //github
-public class Login extends Activity implements OnClickListener {
+public class Login extends SherlockActivity implements OnClickListener {
 	Button btnRegister;
 	Button btnLogin;
 	TextView textView1;
@@ -77,7 +78,7 @@ public class Login extends Activity implements OnClickListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_login, menu);
+		getSupportMenuInflater().inflate(R.menu.activity_login, menu);
 		return true;
 	}
 
@@ -114,7 +115,6 @@ public class Login extends Activity implements OnClickListener {
 			editor.putString("email", email);
 			editor.putString("password", password);
 			editor.commit();
-			
 			HttpClient client = new DefaultHttpClient();
 			HttpPost post = new HttpPost(params[0]);
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
