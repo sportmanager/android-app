@@ -6,6 +6,7 @@
     <string name="title_activity_login">Sport Manager</string>
     <string name="login">Log in</string>
     <string name="register">Register</string>
+    <string name="action_exit">Log out</string>
     <string name="text_tab1">Это первая вкладка</string>
 	<string name="text_tab2">Это вторая вкладка</string>
 	<string name="text_tab3">Это третья вкладка</string>

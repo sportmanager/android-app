@@ -19,7 +19,7 @@ public class Register extends Activity {
 		// включаем поддержку JavaScript
 		mWebView.getSettings().setJavaScriptEnabled(true);
 		// указываем страницу загрузки
-		mWebView.loadUrl("http://sportmanager.zz.mu");
+		mWebView.loadUrl("http://sportmanager.zz.mu/register");
 		mWebView.setWebViewClient(new HelloWebViewClient());
 	}
 

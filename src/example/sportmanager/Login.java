@@ -45,10 +45,12 @@ public class Login extends SherlockActivity implements OnClickListener {
 	EditText editPassword;
 	JSONObject serverResponse;
 	WebView mWebView;
+	
 	public static final String PREFS_NAME = "UserPrefs";
 	String email;
 	String password;
 	SharedPreferences settings;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -70,9 +72,9 @@ public class Login extends SherlockActivity implements OnClickListener {
 		editPassword = (EditText) findViewById(R.id.editPassword);
 		editEmail.setText(email);
 		editPassword.setText(password);
-		if (email != "" && password != "") {
-			new MyTask().execute("http://app.sportmanager.zz.mu/");
-		}
+		//if (email != "" && password != "") {
+		//	new MyTask().execute("http://app.sportmanager.zz.mu/");
+		//}
 
 	}
 
@@ -104,6 +106,8 @@ public class Login extends SherlockActivity implements OnClickListener {
 
 	class MyTask extends AsyncTask<String, String, JSONObject> {
 
+		
+		
 		protected void onPreExecute() {
 			super.onPreExecute();
 			progressBar1.setVisibility(View.VISIBLE);
@@ -178,8 +182,12 @@ public class Login extends SherlockActivity implements OnClickListener {
 					SharedPreferences.Editor editor = settings.edit();
 					editor.putString("name", result.getString("name"));
 					editor.commit();
+					Toast.makeText(Login.this,
+							"Username : " + settings.getString("name", ""), Toast.LENGTH_LONG)
+							.show();
 					Intent i2 = new Intent(Login.this, Main.class);
 					startActivity(i2);
+					finish();
 				} else {
 					Toast.makeText(Login.this,
 							"Invalid username/password. :'(", Toast.LENGTH_LONG)

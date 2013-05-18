@@ -1,16 +1,22 @@
 package example.sportmanager;
 
 import java.util.ArrayList;
+
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TabWidget;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class Main extends SherlockFragmentActivity {
@@ -18,10 +24,55 @@ public class Main extends SherlockFragmentActivity {
 	ViewPager mViewPager;
 	TabsAdapter mTabsAdapter;
 
+	public static final String PREFS_NAME = "UserPrefs";
+	String email;
+	String password;
+	String name;
+	SharedPreferences settings;
+	public static final int action_exit = 300;
+
+	@Override
+	public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+		com.actionbarsherlock.view.MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.activity_login, menu);
+//		menu.add(Menu.NONE, R.id.action_exit, Menu.NONE,R.string.action_exit)
+//	    .setIcon(android.R.drawable.ic_menu_close_clear_cancel)
+//	    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.action_exit:
+			settings.edit().clear().commit();
+			Intent login = new Intent(this, Main.class);
+			startActivity(login);
+			finish();
+			return true;
+		
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(SampleList.THEME); // Used for theme switching in samples
 		super.onCreate(savedInstanceState);
+
+		settings = getSharedPreferences(PREFS_NAME, 0);
+
+		email = settings.getString("email", "");
+		password = settings.getString("password", "");
+		name = settings.getString("name", "");
+		// settings.edit().clear().commit();
+		if (name == "") {
+			Intent login = new Intent(this, Login.class);
+			startActivity(login);
+			finish();
+		}
 
 		setContentView(R.layout.activity_main);
 		mTabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -140,5 +191,7 @@ public class Main extends SherlockFragmentActivity {
 
 		public void onPageScrollStateChanged(int state) {
 		}
+
 	}
+
 }

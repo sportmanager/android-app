@@ -59,6 +59,10 @@ public class UserView extends SherlockFragment {
 		v = inflater.inflate(R.layout.hello_world, container, false);
 		return v;
 	}
+	
+	public void onActivityResumed(Bundle savedInstanceState){
+		super.onActivityCreated(savedInstanceState);
+	}
 
 	class MyTask extends AsyncTask<String, String, JSONObject> {
 
